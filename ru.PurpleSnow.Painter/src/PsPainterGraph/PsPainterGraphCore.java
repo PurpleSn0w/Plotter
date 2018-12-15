@@ -14,13 +14,12 @@ public class PsPainterGraphCore {
     public double []y;
     public int begin, end;
     public double xstep,ystep,zeroLevel;
-    public boolean autofillY =true;
+    public boolean autofillY = true;
     public int areaX,areaY,areaW,areaH;
-    public boolean ready=false;
+    public boolean ready = false;
 
     DrawLine drawLine;
 
-    int test0=0;
     public PsPainterGraphCore(double []y, int begin, int end, double xstep,
                               double ystep, double zeroLevel, boolean autofillY,
                               int areaX,int areaY,int areaW,int areaH,DrawLine drawLine){

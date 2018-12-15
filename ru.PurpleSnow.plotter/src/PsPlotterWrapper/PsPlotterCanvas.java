@@ -90,10 +90,10 @@ public class PsPlotterCanvas extends PsUiDoubleCanvas {
     public void clearGraphs(){
         graphs.clear();
     }
-    public void remvoeGraph(int i){
+    public void removeGraph(int i){
         graphs.remove(i);
     }
-    public void remvoeGraph(PsPainterGraphCore i){
+    public void removeGraph(PsPainterGraphCore i){
         graphs.remove(i);
     }
     public void zoomX(double rate){
