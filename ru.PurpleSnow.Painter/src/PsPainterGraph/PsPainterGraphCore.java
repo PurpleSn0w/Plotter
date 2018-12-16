@@ -46,9 +46,46 @@ public class PsPainterGraphCore {
         this.drawLine=drawLine;
         begin=0;
         end=y.length-1;
-        autofillY =true;
+        autofillY = true;
         calcParams();
         checkReady();
+    }
+    public PsPainterGraphCore(){
+        y = new double[3];
+        y[0]=y[1]=y[2]=0;
+        areaH=areaW=areaX=areaY=10;
+        drawLine=(double x1,double y1,double x2,double y2) -> {};
+        begin=0;end=2;
+        autofillY = true;
+        xstep=ystep=zeroLevel=1;
+        checkReady();
+    }
+    public PsPainterGraphCore(double[] y,PsPainterGraphCore pattern){
+        this(   y,pattern.begin,pattern.end,pattern.xstep,
+                pattern.ystep,pattern.zeroLevel,pattern.autofillY,
+                pattern.areaX,pattern.areaY,pattern.areaW,pattern.areaH,pattern.drawLine
+        );
+    }
+    public PsPainterGraphCore createByPattern(double[] y){
+        return new PsPainterGraphCore(y,this);
+    }
+    public void copy(PsPainterGraphCore source){
+        this.y = source.y;
+        this.begin = source.begin;
+        this.end = source.end;
+        this.xstep = source.xstep;
+        this.ystep = source.ystep;
+        this.zeroLevel = source.zeroLevel;
+        this.autofillY = source.autofillY;
+        this.areaX = source.areaX;
+        this.areaY = source.areaY;
+        this.areaW = source.areaW;
+        this.areaH = source.areaH;
+        this.drawLine = source.drawLine;
+    }
+    public void adjustToPattern(double[] y,PsPainterGraphCore pattern){
+        copy(pattern);
+        this.y = y;
     }
     private void calcParams(){
         calcXstep();
@@ -83,6 +120,47 @@ public class PsPainterGraphCore {
             drawLine.drawLine(areaX+xstep*(i-begin-1),zeroLevel-ystep*y[i-1],
                     areaX+xstep*(i-begin),zeroLevel-ystep*y[i]);
         }
+    }
+    public void fillYwhole(){
+        double[] maxmin = PsMathArrays.maxmin(y);
+        double max = maxmin[1];
+        double min = maxmin[0];
+        ystep=0;
+        if(max-min!=0)ystep=(double)areaH/(max-min);
+        zeroLevel=areaY+areaH+ystep*min;
+    }
+    public void fillY(){
+        double[] maxmin = PsMathArrays.maxmin(y,begin,end);
+        double max = maxmin[1];
+        double min = maxmin[0];
+        ystep=0;
+        if(max-min!=0)ystep=(double)areaH/(max-min);
+        zeroLevel=areaY+areaH+ystep*min;
+    }
+    public void calcXstep(int begin,int end){
+        this.begin=begin;
+        this.end=end;
+        calcXstep();
+    }
+    public void calcXstep(){
+        xstep=Math.abs(Math.min(areaW,(double)areaW/(end-begin)));
+    }
+    public void fitFull(){
+        calcXstep(0, y.length - 1);
+        fillYwhole();
+    }
+    public int getBeginX(double x){
+        double xRelative = x-areaX;
+        int ret = (int)(xRelative/xstep);
+        if(xRelative>0)ret++;
+        ret=Math.max(0,ret);
+        return Math.max(ret+begin,0);
+    }
+    public int getEndX(double x){
+        double xRelative = x-areaX;
+        int ret = (int)(xRelative/xstep);
+        ret = Math.min(y.length-1,ret);
+        return Math.min(y.length-1,ret+begin);
     }
     public void zoomX(double rate,int point){
         //int range=(int)((end-begin)*rate);  //количество точек
@@ -127,45 +205,6 @@ public class PsPainterGraphCore {
     }
     public void zoomX(double rate){
         zoomX(rate,begin+(end-begin)/2);
-    }
-    public void fillYwhole(){
-        double max = PsMathArrays.max(y);
-        double min = PsMathArrays.min(y);
-        ystep=0;
-        if(max-min!=0)ystep=(double)areaH/(max-min);
-        zeroLevel=areaY+areaH+ystep*min;
-    }
-    public void fillY(){
-        double max = PsMathArrays.max(y,begin,end);
-        double min = PsMathArrays.min(y,begin,end);
-        ystep=0;
-        if(max-min!=0)ystep=(double)areaH/(max-min);
-        zeroLevel=areaY+areaH+ystep*min;
-    }
-    public void calcXstep(int begin,int end){
-        this.begin=begin;
-        this.end=end;
-        calcXstep();
-    }
-    public void calcXstep(){
-        xstep=Math.abs(Math.min(areaW,(double)areaW/(end-begin)));
-    }
-    public void fitFull(){
-        calcXstep(0, y.length - 1);
-        fillYwhole();
-    }
-    public int getBeginX(double x){
-        double xRelative = x-areaX;
-        int ret = (int)(xRelative/xstep);
-        if(xRelative>0)ret++;
-        ret=Math.max(0,ret);
-        return Math.max(ret+begin,0);
-    }
-    public int getEndX(double x){
-        double xRelative = x-areaX;
-        int ret = (int)(xRelative/xstep);
-        ret = Math.min(y.length-1,ret);
-        return Math.min(y.length-1,ret+begin);
     }
 
     public interface DrawLine{

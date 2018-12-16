@@ -1,5 +1,6 @@
 package PsPlotterWrapper;
 
+import PsPlotterGraphics.PsPlotterStack;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -10,6 +11,7 @@ public class PsPlotterWrapper {
     //VBox root = new VBox();
     BorderPane root = new BorderPane();
     PsPlotterCanvas canvas = new PsPlotterCanvas();
+    PsPlotterStack stack = new PsPlotterStack(10,10,10,10);
     //BorderPane workArea = new BorderPane();
     public PsPlotterWrapper(Stage stage,int x,int y,int w,int h){
         this.stage=stage;
@@ -17,6 +19,8 @@ public class PsPlotterWrapper {
         menuBar = new PsPlotterMenu(
                 ()->{
                     canvas.testRandom(500);
+                    stack.getGraph(0).info();
+                    stack.draw(0);
                 },
                 ()->{
                     canvas.zoomX(0.8);
@@ -36,7 +40,8 @@ public class PsPlotterWrapper {
             );
         //workArea.setCenter(canvas);
         root.setTop(menuBar.root);
-        root.setCenter(canvas);
+        //root.setCenter(canvas);
+        root.setCenter(stack);
         root.widthProperty().addListener(e -> canvas.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         root.heightProperty().addListener(e -> canvas.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         setBounds(x,y,w,h);

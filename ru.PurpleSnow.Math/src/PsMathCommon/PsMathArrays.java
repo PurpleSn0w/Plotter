@@ -32,6 +32,26 @@ public class PsMathArrays {
         }
         return ret;
     }
+    public static double[] maxmin(double []array){
+        double[] ret = new double[2];
+        ret[0]=array[0];
+        ret[1]=array[0];
+        for(double y:array){
+            ret[0]=Math.min(ret[0],y);
+            ret[1]=Math.max(ret[1],y);
+        }
+        return ret;
+    }
+    public static double[] maxmin(double []array,int from,int to){
+        double[] ret = new double[2];
+        ret[0]=array[from];
+        ret[1]=array[from];
+        for(int i=from;i<=to;i++){
+            ret[0]=Math.min(ret[0],array[i]);
+            ret[1]=Math.max(ret[1],array[i]);
+        }
+        return ret;
+    }
     public static double[] toDouble(int []y){
         int size=y.length;
         double []ret=new double[size];
