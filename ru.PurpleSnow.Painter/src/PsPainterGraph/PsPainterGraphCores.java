@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public class PsPainterGraphCores<E extends PsPainterGraphCore> {
     public ArrayList<E>cores = new ArrayList();
     public boolean ready=false;
-    private void setReady(boolean b){
-        ready = b;
+    public void setDrawLine(PsPainterGraphCore.DrawLine drawLine){
+        for(E core:cores){
+            core.setDrawLine(drawLine);
+        }
     }
     public void clear(){
         cores.clear();
@@ -16,8 +18,21 @@ public class PsPainterGraphCores<E extends PsPainterGraphCore> {
     public E get(int index){
         return cores.get(index);
     }
-    public void add(E core){
+    protected void add(E core){
         cores.add(core);
+    }
+    public void refreshAreaX(int areaX,int areaW){
+        cores.get(0).areaX = areaX;
+        cores.get(0).areaW = areaW;
+        calcXstep();
+    }
+    public void refreshAreaY(int areaY,int areaH){
+        cores.get(0).areaY = areaY;
+        cores.get(0).areaH = areaH;
+        fillYwhole();
+    }
+    public void setReady(boolean b){
+        ready = b;
     }
     public void add(int index, E core){cores.add(index,core);}
     public void add(double[] y,E blank){
@@ -51,6 +66,11 @@ public class PsPainterGraphCores<E extends PsPainterGraphCore> {
             core.xstep=xstep;
             core.begin=begin;
             core.end=end;
+        }
+    }
+    public void setXstep(double xstep){
+        for(E core:cores){
+            core.xstep=xstep;
         }
     }
     public void calcXstep(int begin,int end){
@@ -97,26 +117,11 @@ public class PsPainterGraphCores<E extends PsPainterGraphCore> {
         calcXstep(0,cores.get(0).y.length-1);
         fillYwhole();
     }
-    public void refreshAreaX(int areaX,int areaW){
-        cores.get(0).areaX = areaX;
-        cores.get(0).areaW = areaW;
-        calcXstep();
-    }
-    public void refreshAreaY(int areaY,int areaH){
-        cores.get(0).areaY = areaY;
-        cores.get(0).areaH = areaH;
-        fillYwhole();
-    }
     public int getBeginX(double x){
         return cores.get(0).getBeginX(x);
     }
     public int getEndX(double x){
         return cores.get(0).getEndX(x);
-    }
-    public void setDrawLine(PsPainterGraphCore.DrawLine drawLine){
-        for(E core:cores){
-            core.setDrawLine(drawLine);
-        }
     }
     public void zoomX(double rate,int point){
         cores.get(0).zoomX(rate,point);

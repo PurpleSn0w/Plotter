@@ -1,21 +1,22 @@
 package PsPlotterGraphics;
 
 import PsPainterGraph.PsPainterGraphCores;
+import PsPainterGraph.PsPlotterGraphModel;
 import javafx.geometry.Insets;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class PsPlotterStack extends StackPane {
-    PsPainterGraphCores<PsPlotterLayer>layers=new PsPainterGraphCores();
-    //protected int areaX,areaY,areaW,areaH;
+    //PsPainterGraphCores<PsPlotterLayer> layers=new PsPainterGraphCores();
+    PsPlotterGraphModel<PsPlotterLayer>layers = new PsPlotterGraphModel();
     public Insets insets;
     public PsPlotterStack(int areaX,int areaY,int areaW,int areaH){
-        addGraph(new PsPlotterLayer(this));
         insets = new Insets(areaX,areaY,areaX,areaY);
+        addGraph(new PsPlotterLayer(this));
     }
     public void addGraph(PsPlotterLayer graph){
         layers.add(graph);
-        PsPlotterLayer l = layers.get(layers.cores.size()-1);
+        PsPlotterLayer l = layers.get(layers.getCount()-1);
         l.gc.setStroke(l.colorSpare);
         l.gc.setLineWidth(l.lineWidth);
         l.refreshArea(  (int)insets.getLeft(),(int)insets.getTop(),
@@ -33,8 +34,8 @@ public class PsPlotterStack extends StackPane {
 
     }
     public void refreshArea(int areaX,int areaY,int areaW,int areaH){
-        layers.refreshAreaX(layers.get(0).areaX,layers.get(0).areaW);
-        layers.refreshAreaY(layers.get(0).areaY,layers.get(0).areaH);
+        layers.setAreaX(layers.get(0).areaX,layers.get(0).areaW);
+        layers.setAreaY(layers.get(0).areaY,layers.get(0).areaH);
     }
     public void resize(double w,double h){
         for(PsPlotterLayer l:layers.cores){

@@ -69,6 +69,10 @@ public class PsPainterGraphCore {
     public PsPainterGraphCore createByPattern(double[] y){
         return new PsPainterGraphCore(y,this);
     }
+    public void adjustToPattern(double[] y,PsPainterGraphCore pattern){
+        copy(pattern);
+        this.y = y;
+    }
     public void copy(PsPainterGraphCore source){
         this.y = source.y;
         this.begin = source.begin;
@@ -82,10 +86,6 @@ public class PsPainterGraphCore {
         this.areaW = source.areaW;
         this.areaH = source.areaH;
         this.drawLine = source.drawLine;
-    }
-    public void adjustToPattern(double[] y,PsPainterGraphCore pattern){
-        copy(pattern);
-        this.y = y;
     }
     private void calcParams(){
         calcXstep();
