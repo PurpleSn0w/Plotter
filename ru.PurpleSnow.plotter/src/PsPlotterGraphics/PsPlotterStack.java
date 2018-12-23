@@ -8,39 +8,44 @@ import javafx.scene.paint.Color;
 
 public class PsPlotterStack extends StackPane{
     //PsPainterGraphCores<PsPlotterLayer> layers=new PsPainterGraphCores();
-    //PsPainterGraphModel<PsPlotterLayer> layers = new PsPainterGraphModel();
-    PsPlotterLayers layers = new PsPlotterLayers(10);
+    PsPainterGraphModel<PsPlotterLayer> layers = new PsPainterGraphModel(10);
+    //PsPlotterLayers layers = new PsPlotterLayers(10);
     public Insets insets;
     public PsPlotterStack(int areaX,int areaY,int areaW,int areaH){
         insets = new Insets(areaX,areaY,areaX,areaY);
-        addGraph(new PsPlotterLayer(this));
+        //addGraph(new PsPlotterLayer(this));
+    }
+    public void removeAll(){
+        layers.removeAll();
+        getChildren().removeAll(getChildren());
     }
     public void addGraph(PsPlotterLayer graph){
         layers.add(graph);
         PsPlotterLayer l = layers.get(layers.getCount()-1);
         l.gc.setStroke(l.colorSpare);
         l.gc.setLineWidth(l.lineWidth);
-        l.refreshArea(  (int)insets.getLeft(),(int)insets.getTop(),
-                        (int)(getWidth()-insets.getLeft()-insets.getRight()),
-                        (int)(getHeight()-insets.getTop()-insets.getBottom())   );
+        l.canvas.setWidth(insets.getLeft()+layers.areaW+insets.getRight());
+        l.canvas.setHeight(insets.getTop()+layers.areaH+insets.getBottom());
         getChildren().add(l.canvas);
     }
     public PsPlotterLayer getGraph(int index){
         return layers.get(index);
     }
     public void draw(int index){
-        layers.get(0).gc.setFill(Color.rgb(154,23,23));
-        layers.get(0).gc.fillRect(10,10,40,30);
+        layers.get(index).gc.setFill(Color.rgb(154,23,23));
+        //layers.get(0).gc.fillRect(10,10,40,30);
+        PsPlotterLayer l = layers.get(index);
         layers.get(index).draw();
 
-    }
-    public void refreshArea(int areaX,int areaY,int areaW,int areaH){
-        layers.setAreaX(layers.get(0).areaX,layers.get(0).areaW);
-        layers.setAreaY(layers.get(0).areaY,layers.get(0).areaH);
     }
     public void setSize(double w,double h){
         setWidth(w);
         setHeight(h);
-        layers.resize((int)w,(int)h,insets);
+        layers.setAreaX((int)insets.getLeft(),(int)(w-insets.getLeft()-insets.getRight()));
+        layers.setAreaY((int)insets.getTop(),(int)(h-insets.getTop()-insets.getBottom()));
+        for(PsPlotterLayer l:layers.cores){
+            l.canvas.setWidth(w);
+            l.canvas.setHeight(h);
+        }
     }
 }

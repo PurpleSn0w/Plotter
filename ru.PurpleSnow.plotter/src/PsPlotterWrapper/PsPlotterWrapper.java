@@ -1,5 +1,7 @@
 package PsPlotterWrapper;
 
+import PsMathCommon.PsMathArrays;
+import PsPlotterGraphics.PsPlotterLayer;
 import PsPlotterGraphics.PsPlotterStack;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -20,8 +22,13 @@ public class PsPlotterWrapper {
         root.heightProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         menuBar = new PsPlotterMenu(
                 ()->{
-                    canvas.testRandom(500);
-                    stack.getGraph(0).info();
+                    //canvas.testRandom(500);
+                    stack.removeAll();
+                    //stack.addGraph(new PsPlotterLayer(stack,new double[3]));
+                    stack.addGraph(new PsPlotterLayer(stack, PsMathArrays.genRandom(10,(double)100)));
+                    /*PsPlotterLayer l = stack.getGraph(0);
+                    l.info();
+                    System.err.println((l.y.length)+"  "+l.begin+"  "+l.end);*/
                     stack.draw(0);
                 },
                 ()->{

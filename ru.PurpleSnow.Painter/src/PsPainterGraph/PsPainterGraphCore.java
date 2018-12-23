@@ -66,6 +66,10 @@ public class PsPainterGraphCore {
                 pattern.areaX,pattern.areaY,pattern.areaW,pattern.areaH,pattern.drawLine
         );
     }
+    public PsPainterGraphCore(double[] y){
+        this.y = y;
+        this.drawLine = (double x1,double y1,double x2,double y2) -> {};
+    }
     public PsPainterGraphCore createByPattern(double[] y){
         return new PsPainterGraphCore(y,this);
     }

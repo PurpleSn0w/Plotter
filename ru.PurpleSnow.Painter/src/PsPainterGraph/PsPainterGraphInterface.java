@@ -12,9 +12,12 @@ public interface PsPainterGraphInterface<E extends PsPainterGraphCore> {
     int getCount();
     void setRange(int newBegin,int newEnd);
     void setParams(E core);
+    void setParams();
     void calcParams();
     void add(E core);
+    void add(int index,E core);
     void remove(int index);
+    void removeAll();
     void setAreaX(int x,int w);
     void setAreaY(int y,int h);
 }

@@ -19,9 +19,19 @@ public class PsPlotterLayer extends PsPainterGraphCore {
     private void ini(StackPane parent){
         parent.widthProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
         parent.heightProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
+        setDrawLine((double x1,double y1,double x2,double y2) -> {
+            //System.err.println(x1+" "+y1+"   "+x2+" "+y2);
+            gc.setFill(Color.RED);
+            gc.setStroke(Color.RED);
+            gc.strokeLine(x1,y1,x2,y2);
+        });
     }
     public PsPlotterLayer(StackPane parent){
         super();
+        ini(parent);
+    }
+    public PsPlotterLayer(StackPane parent,double[] y){
+        super(y);
         ini(parent);
     }
     public PsPlotterLayer(StackPane parent,double []y, int areaX, int areaY, int areaW, int areaH){
@@ -31,5 +41,11 @@ public class PsPlotterLayer extends PsPainterGraphCore {
     public void resize(double w,double h){
         canvas.setWidth(w);
         canvas.setHeight(h);
+        draw();
+        System.err.println("PsPlotterLayer.resize("+w+","+h+") -> "+canvas.getWidth()+" "+canvas.getHeight());
+    }
+    public void draw(){
+        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+        super.draw();
     }
 }
