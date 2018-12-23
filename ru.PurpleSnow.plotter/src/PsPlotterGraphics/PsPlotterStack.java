@@ -1,14 +1,15 @@
 package PsPlotterGraphics;
 
-import PsPainterGraph.PsPainterGraphCores;
-import PsPainterGraph.PsPlotterGraphModel;
+import PsPainterGraph.PsPainterGraphModel;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-public class PsPlotterStack extends StackPane {
+public class PsPlotterStack extends StackPane{
     //PsPainterGraphCores<PsPlotterLayer> layers=new PsPainterGraphCores();
-    PsPlotterGraphModel<PsPlotterLayer>layers = new PsPlotterGraphModel();
+    //PsPainterGraphModel<PsPlotterLayer> layers = new PsPainterGraphModel();
+    PsPlotterLayers layers = new PsPlotterLayers(10);
     public Insets insets;
     public PsPlotterStack(int areaX,int areaY,int areaW,int areaH){
         insets = new Insets(areaX,areaY,areaX,areaY);
@@ -37,9 +38,9 @@ public class PsPlotterStack extends StackPane {
         layers.setAreaX(layers.get(0).areaX,layers.get(0).areaW);
         layers.setAreaY(layers.get(0).areaY,layers.get(0).areaH);
     }
-    public void resize(double w,double h){
-        for(PsPlotterLayer l:layers.cores){
-            l.resize(w,h);
-        }
+    public void setSize(double w,double h){
+        setWidth(w);
+        setHeight(h);
+        layers.resize((int)w,(int)h,insets);
     }
 }

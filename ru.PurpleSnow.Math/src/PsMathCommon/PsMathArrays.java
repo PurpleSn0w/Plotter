@@ -52,6 +52,18 @@ public class PsMathArrays {
         }
         return ret;
     }
+    public static double[] maxmin(double[] ...arrays){
+        double[] a0 = arrays[0];
+        double[] ret = new double[2];
+        ret[0] = a0[0];
+        ret[1] = a0[0];
+        for(double[] a:arrays){
+            double[] m = maxmin(a);
+            if(ret[0]>m[0])ret[0]=m[0];
+            if(ret[1]<m[1])ret[1]=m[1];
+        }
+        return ret;
+    }
     public static double[] toDouble(int []y){
         int size=y.length;
         double []ret=new double[size];
@@ -154,5 +166,28 @@ public class PsMathArrays {
         if(j!=sizeNew)System.err.println("PsMathArrays.exclude() - mismatch of result array size: "+
                 "expected "+sizeNew+", returned "+j);
         return ret;
+    }
+    public static double[] alignLength(double[] src,double[] target,double blank){
+        int lenSrc = src.length;
+        int lenTarget = target.length;
+        if(lenSrc>=lenTarget)return Arrays.copyOf(src,target.length);
+        else {
+            double[] ret = new double[lenTarget];
+            for(int i=0;i<lenTarget;i++){
+                ret[i] = (i<lenSrc) ? src[i] : blank;
+            }
+            return ret;
+        }
+    }
+    public static double[] alignLength(double[] src,int targetLength,double blank){
+        int lenSrc = src.length;
+        if(lenSrc>=targetLength)return Arrays.copyOf(src,targetLength);
+        else {
+            double[] ret = new double[targetLength];
+            for(int i=0;i<targetLength;i++){
+                ret[i] = (i<lenSrc) ? src[i] : blank;
+            }
+            return ret;
+        }
     }
 }

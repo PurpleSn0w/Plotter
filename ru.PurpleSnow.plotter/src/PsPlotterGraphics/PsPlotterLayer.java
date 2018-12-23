@@ -9,24 +9,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class PsPlotterLayer extends PsPainterGraphCore {
-    Canvas canvas=new Canvas(10,10);
+    public Canvas canvas=new Canvas(10,10);
     public GraphicsContext gc = canvas.getGraphicsContext2D();
     public Color colorMain = Color.rgb(198,198,198);
     public Color colorSpare = Color.rgb(198,61,61);
+    public boolean independentY = false;
     double lineWidth = 1;
+
     private void ini(StackPane parent){
-        parent.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                resize(parent.getWidth(),parent.getHeight());
-            }
-        });
-        parent.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                resize(parent.getWidth(),parent.getHeight());
-            }
-        });
+        parent.widthProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
+        parent.heightProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
     }
     public PsPlotterLayer(StackPane parent){
         super();

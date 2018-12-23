@@ -70,22 +70,25 @@ public class PsPainterGraphCore {
         return new PsPainterGraphCore(y,this);
     }
     public void adjustToPattern(double[] y,PsPainterGraphCore pattern){
-        copy(pattern);
+        copyParams(pattern);
         this.y = y;
     }
     public void copy(PsPainterGraphCore source){
         this.y = source.y;
-        this.begin = source.begin;
-        this.end = source.end;
-        this.xstep = source.xstep;
-        this.ystep = source.ystep;
-        this.zeroLevel = source.zeroLevel;
-        this.autofillY = source.autofillY;
-        this.areaX = source.areaX;
-        this.areaY = source.areaY;
-        this.areaW = source.areaW;
-        this.areaH = source.areaH;
-        this.drawLine = source.drawLine;
+        copyParams(source);
+    }
+    public void copyParams(PsPainterGraphCore pattern){
+        this.begin = pattern.begin;
+        this.end = pattern.end;
+        this.xstep = pattern.xstep;
+        this.ystep = pattern.ystep;
+        this.zeroLevel = pattern.zeroLevel;
+        this.autofillY = pattern.autofillY;
+        this.areaX = pattern.areaX;
+        this.areaY = pattern.areaY;
+        this.areaW = pattern.areaW;
+        this.areaH = pattern.areaH;
+        this.drawLine = pattern.drawLine;
     }
     private void calcParams(){
         calcXstep();
