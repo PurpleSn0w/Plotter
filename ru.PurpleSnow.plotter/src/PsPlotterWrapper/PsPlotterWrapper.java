@@ -18,8 +18,12 @@ public class PsPlotterWrapper {
     public PsPlotterWrapper(Stage stage,int x,int y,int w,int h){
         this.stage=stage;
         this.stage.setTitle("Plotter");
-        root.widthProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
-        root.heightProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
+        root.widthProperty().addListener(e -> {
+            stack.setSize(root.getWidth(),root.getHeight()-menuBar.h);
+        });
+        root.heightProperty().addListener(e -> {
+            stack.setSize(root.getWidth(),root.getHeight()-menuBar.h);
+        });
         menuBar = new PsPlotterMenu(
                 ()->{
                     //canvas.testRandom(500);

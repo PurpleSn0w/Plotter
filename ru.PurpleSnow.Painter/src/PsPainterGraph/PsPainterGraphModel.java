@@ -48,7 +48,8 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         return length;
     }
     public E get(int index){
-        return cores.get(index);
+        if(cores.size()>0)return cores.get(index);
+        else return null;
     }
     public void setRange(int newBegin,int newEnd){
         begin = newBegin;

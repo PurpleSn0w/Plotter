@@ -7,13 +7,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class PsPlotterStack extends StackPane{
-    //PsPainterGraphCores<PsPlotterLayer> layers=new PsPainterGraphCores();
     PsPainterGraphModel<PsPlotterLayer> layers = new PsPainterGraphModel(10);
-    //PsPlotterLayers layers = new PsPlotterLayers(10);
     public Insets insets;
     public PsPlotterStack(int areaX,int areaY,int areaW,int areaH){
         insets = new Insets(areaX,areaY,areaX,areaY);
-        //addGraph(new PsPlotterLayer(this));
     }
     public void removeAll(){
         layers.removeAll();
@@ -32,11 +29,12 @@ public class PsPlotterStack extends StackPane{
         return layers.get(index);
     }
     public void draw(int index){
-        layers.get(index).gc.setFill(Color.rgb(154,23,23));
-        //layers.get(0).gc.fillRect(10,10,40,30);
         PsPlotterLayer l = layers.get(index);
-        layers.get(index).draw();
-
+        if(layers.length>0 && l!=null) {
+            l.gc.setFill(Color.rgb(154, 23, 23));
+            //layers.get(0).gc.fillRect(10,10,40,30);
+            l.draw();
+        }
     }
     public void setSize(double w,double h){
         setWidth(w);
@@ -47,5 +45,6 @@ public class PsPlotterStack extends StackPane{
             l.canvas.setWidth(w);
             l.canvas.setHeight(h);
         }
+        draw(0);
     }
 }
