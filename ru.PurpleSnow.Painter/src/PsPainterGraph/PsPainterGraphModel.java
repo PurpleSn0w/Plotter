@@ -48,8 +48,7 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         return length;
     }
     public E get(int index){
-        if(cores.size()>0)return cores.get(index);
-        else return null;
+        return cores.get(index);
     }
     public void setRange(int newBegin,int newEnd){
         begin = newBegin;
@@ -80,22 +79,24 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         }
     }
     public void calcParams(){
-        min = cores.get(0).y[0];
-        max = min;
-        for(E core:cores){
-            double[] m = PsMathArrays.maxmin(core.y);
-            min = Math.min(min,m[0]);
-            max = Math.max(max,m[1]);
+        if(cores!=null && cores.size()>0) {
+            min = cores.get(0).y[0];
+            max = min;
+            for (E core : cores) {
+                double[] m = PsMathArrays.maxmin(core.y);
+                min = Math.min(min, m[0]);
+                max = Math.max(max, m[1]);
+            }
+            ystep = 0;
+            if (max - min != 0) ystep = (double) areaH / (max - min);
+            zeroLevel = areaY + areaH + ystep * min;
+            setRange(begin, end);
+            setParams();
         }
-        ystep=0;
-        if(max-min!=0)ystep=(double)areaH/(max-min);
-        zeroLevel=areaY+areaH+ystep*min;
-        setRange(begin,end);
-        setParams();
     }
     public void add(E core){
         if(!isReady(core))setParams(core);
-        add(0,core);
+        add(cores.size(),core);
     }
     public void add(int index,E core){
         if(!isReady(core)) setParams(core);
@@ -128,12 +129,44 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         areaY = y;
         areaH = h;
         for(E core:cores){
-            double rate = (double)core.areaH/core.ystep;
+            /*double rate = (double)core.areaH/core.ystep;
             double zero = (double)core.areaH/core.zeroLevel;
             core.areaY = y;
             core.areaH = h;
-            core.ystep = (double)core.areaH/rate;
-            core.zeroLevel = (double)core.areaH/zero;
+            core.ystep = (double)core.areaH/(double)rate;
+            core.zeroLevel = (double)core.areaH/zero;*/
+
+            core.areaY = y;
+            core.areaH = h;
         }
+        calcParams();
+    }
+    public void zoomX(double rate){
+        for(E core:cores){
+            core.zoomX(rate);
+        }
+    }
+    public void zoomX(double rate,int point){
+        for(E core:cores){
+            core.zoomX(rate,point);
+        }
+    }
+    public void fitY(boolean full){
+        /*if(cores!=null && cores.size()>0) {
+            min = cores.get(0).y[0];
+            max = min;
+            for (E core : cores) {
+                double[] m = full?PsMathArrays.maxmin(core.y):PsMathArrays.maxmin(core.y,begin,end);
+                min = Math.min(min, m[0]);
+                max = Math.max(max, m[1]);
+            }
+            ystep = 0;
+            if (max - min != 0) ystep = (double) areaH / (max - min);
+            zeroLevel = areaY + areaH + ystep * min;
+            setParams();
+        }*/
+        begin = 0;
+        end = cores.get(0).y.length-1;
+        calcParams();
     }
 }

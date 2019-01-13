@@ -163,11 +163,24 @@ public class PsPainterGraphCore {
         ret=Math.max(0,ret);
         return Math.max(ret+begin,0);
     }
+    public static int getBeginX(double x,int areaX,double xstep,int begin){
+        double xRelative = x-areaX;
+        int ret = (int)(xRelative/xstep);
+        if(xRelative>0)ret++;
+        ret=Math.max(0,ret);
+        return Math.max(ret+begin,0);
+    }
     public int getEndX(double x){
         double xRelative = x-areaX;
         int ret = (int)(xRelative/xstep);
         ret = Math.min(y.length-1,ret);
         return Math.min(y.length-1,ret+begin);
+    }
+    public static int getEndX(double x,int arrayLen,int areaX,double xstep,int begin){
+        double xRelative = x-areaX;
+        int ret = (int)(xRelative/xstep);
+        ret = Math.min(arrayLen-1,ret);
+        return Math.min(arrayLen-1,ret+begin);
     }
     public void zoomX(double rate,int point){
         //int range=(int)((end-begin)*rate);  //количество точек

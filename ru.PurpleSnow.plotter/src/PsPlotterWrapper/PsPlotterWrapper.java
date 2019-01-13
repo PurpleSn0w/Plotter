@@ -18,37 +18,37 @@ public class PsPlotterWrapper {
     public PsPlotterWrapper(Stage stage,int x,int y,int w,int h){
         this.stage=stage;
         this.stage.setTitle("Plotter");
-        root.widthProperty().addListener(e -> {
-            stack.setSize(root.getWidth(),root.getHeight()-menuBar.h);
-        });
-        root.heightProperty().addListener(e -> {
-            stack.setSize(root.getWidth(),root.getHeight()-menuBar.h);
-        });
+        root.widthProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
+        root.heightProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         menuBar = new PsPlotterMenu(
                 ()->{
-                    //canvas.testRandom(500);
                     stack.removeAll();
-                    //stack.addGraph(new PsPlotterLayer(stack,new double[3]));
-                    stack.addGraph(new PsPlotterLayer(stack, PsMathArrays.genRandom(10,(double)100)));
-                    /*PsPlotterLayer l = stack.getGraph(0);
-                    l.info();
-                    System.err.println((l.y.length)+"  "+l.begin+"  "+l.end);*/
-                    stack.draw(0);
+                    double[] r = PsMathArrays.genRandom(100,(double)10);
+                    double[] s = PsMathArrays.genSin(100,(double)10,0,0.7);
+                    double[] sr = PsMathArrays.mult(s,r);
+                    r = PsMathArrays.sum(r,50);
+                    stack.addGraph(new PsPlotterLayer(stack,s));
+                    stack.addGraph(new PsPlotterLayer(stack,r));
+                    stack.addGraph(new PsPlotterLayer(stack,sr));
+                    stack.draw();
                 },
                 ()->{
-                    canvas.zoomX(0.8);
-                    canvas.drawAll();
+                    stack.layers.zoomX(0.8);
+                    stack.draw();
                 },
                 ()->{
-                    canvas.zoomX(1.2);
-                    canvas.drawAll();
+                    stack.layers.zoomX(1.2);
+                    stack.draw();
                 },
                 () -> {
-                    canvas.fitFull();
-                    canvas.drawAll();
+                    stack.layers.fitY(true);
+                    stack.draw();
                 },
                 (boolean zoomInArea) -> {
-                    canvas.toolZoomInArea = zoomInArea;
+                    stack.toolZoomInArea = zoomInArea;
+                    //int point = stack.layers.begin + (stack.layers.end-stack.layers.begin)/2;
+                    //stack.layers.zoomX(0.8,point);
+                    stack.draw();
                 }
             );
         //workArea.setCenter(canvas);
