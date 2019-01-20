@@ -87,6 +87,7 @@ public class PsPlotterStack extends StackPane{
         setOnMousePressed(e -> {
             xpressed = e.getX();
             ypressed = e.getY();
+            xdelta = 0;
         });
         setOnMouseDragged(e -> {
             xdragged = e.getX();
@@ -94,22 +95,31 @@ public class PsPlotterStack extends StackPane{
             xdelta = xdragged - xpressed;
             ydelta = ydragged - ypressed;
             drawDragging();
-            System.err.println(
+            /*System.err.println(
                     "new begin = "+PsPainterGraphCore.getBeginX(Math.min(xpressed,xdragged),layers.areaX,layers.xstep,layers.begin)+
                     "    new end = "+PsPainterGraphCore.getEndX(Math.max(xpressed,xdragged),layers.cores.get(0).y.length,
-                            layers.areaX,layers.xstep,layers.begin));
+                            layers.areaX,layers.xstep,layers.begin));*/
         });
         setOnMouseReleased(e -> {
             drawReleasing();
-            if(toolZoomInArea && layers!=null && layers.cores!=null && layers.cores.size()>0){
+            System.err.println("\n"+xdelta);
+            if(toolZoomInArea && layers!=null && layers.cores!=null && layers.cores.size()>0 && Math.abs(xdelta)>0){
+                System.err.println(xpressed+"   "+xdragged+"   "+layers.areaX+"   "+layers.areaW+"   "+layers.xstep+"   "
+                        +layers.begin+"   "+layers.end);
                 int newBegin = PsPainterGraphCore.getBeginX(Math.min(xpressed,xdragged),layers.areaX,layers.xstep,layers.begin);
                 int newEnd = PsPainterGraphCore.getEndX(Math.max(xpressed,xdragged),layers.cores.get(0).y.length,
                         layers.areaX,layers.xstep,layers.begin);
-                layers.begin = newBegin;
-                layers.end = newEnd;
-                layers.calcParams();
-                System.err.println(layers.begin+"   "+layers.end);
+                System.err.println(newBegin+"   "+newEnd);
+                if(newEnd-newBegin>2) {
+                    layers.begin = newBegin;
+                    layers.end = newEnd;
+                    layers.calcParams();
+                    System.err.println(layers.begin + "   " + layers.end);
+                }
                 draw();
+                System.err.println("\nzoomArea\n");
+                layers.get(0).info();
+                layers.info();
             }
         });
     }

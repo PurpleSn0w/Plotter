@@ -13,6 +13,7 @@ public interface PsPainterGraphInterface<E extends PsPainterGraphCore> {
     void setRange(int newBegin,int newEnd);
     void setParams(E core);
     void setParams();
+    void copyParams(E core);
     void calcParams();
     void add(E core);
     void add(int index,E core);
@@ -23,4 +24,5 @@ public interface PsPainterGraphInterface<E extends PsPainterGraphCore> {
     void zoomX(double rate);
     void zoomX(double rate,int point);
     void fitY(boolean full);
+    void info();
 }

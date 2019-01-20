@@ -78,6 +78,19 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
             setParams(core);
         }
     }
+    public void copyParams(E core){
+        if(core != null){
+            begin       = core.begin;
+            end         = core.end;
+            xstep       = core.xstep;
+            ystep       = core.ystep;
+            zeroLevel   = core.zeroLevel;
+            areaX       = core.areaX;
+            areaY       = core.areaY;
+            areaW       = core.areaW;
+            areaH       = core.areaH;
+        }
+    }
     public void calcParams(){
         if(cores!=null && cores.size()>0) {
             min = cores.get(0).y[0];
@@ -145,11 +158,13 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         for(E core:cores){
             core.zoomX(rate);
         }
+        copyParams(get(0));
     }
     public void zoomX(double rate,int point){
         for(E core:cores){
             core.zoomX(rate,point);
         }
+        copyParams(get(0));
     }
     public void fitY(boolean full){
         /*if(cores!=null && cores.size()>0) {
@@ -168,5 +183,10 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         begin = 0;
         end = cores.get(0).y.length-1;
         calcParams();
+    }
+    public void info(){
+        System.err.println("PsPainterGraphModel object info:");
+        System.err.println("size = "+cores.get(0).y.length+"   ["+begin+":"+end+"]   xstep = "+xstep+
+                "   ystep = "+ystep+"   zeroLevel = "+zeroLevel+"   rect = "+areaX+" "+areaY+" "+areaW+" "+areaH);
     }
 }

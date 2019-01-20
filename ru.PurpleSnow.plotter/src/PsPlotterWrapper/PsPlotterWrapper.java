@@ -35,14 +35,21 @@ public class PsPlotterWrapper {
                 ()->{
                     stack.layers.zoomX(0.8);
                     stack.draw();
+                    System.err.println("\nzoomIn\n");
+                    stack.layers.info();
                 },
                 ()->{
                     stack.layers.zoomX(1.2);
                     stack.draw();
+                    System.err.println("\nzoomOut\n");
+                    stack.layers.info();
                 },
                 () -> {
                     stack.layers.fitY(true);
                     stack.draw();
+                    stack.layers.get(0).info();
+                    System.err.println("\nzoomFit\n");
+                    stack.layers.info();
                 },
                 (boolean zoomInArea) -> {
                     stack.toolZoomInArea = zoomInArea;
