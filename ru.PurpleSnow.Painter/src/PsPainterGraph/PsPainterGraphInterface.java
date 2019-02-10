@@ -23,6 +23,8 @@ public interface PsPainterGraphInterface<E extends PsPainterGraphCore> {
     void setAreaY(int y,int h);
     void zoomX(double rate);
     void zoomX(double rate,int point);
+    void move(int step);
+    void moveTo(int point);
     void fitY(boolean full);
     void info();
 }

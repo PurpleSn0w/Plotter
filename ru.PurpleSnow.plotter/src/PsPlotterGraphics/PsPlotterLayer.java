@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 public class PsPlotterLayer extends PsPainterGraphCore {
     public Canvas canvas=new Canvas(10,10);
     public GraphicsContext gc = canvas.getGraphicsContext2D();
-    public Color colorMain = Color.rgb(198,198,198);
+    public Color colorMain = Color.rgb(98,23,23);
     public Color colorSpare = Color.rgb(198,61,61);
     public boolean independentY = false;
     double lineWidth = 1;
@@ -20,9 +20,6 @@ public class PsPlotterLayer extends PsPainterGraphCore {
         parent.widthProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
         parent.heightProperty().addListener(e -> resize(parent.getWidth(),parent.getHeight()));
         setDrawLine((double x1,double y1,double x2,double y2) -> {
-            //System.err.println(x1+" "+y1+"   "+x2+" "+y2);
-            gc.setFill(Color.RED);
-            gc.setStroke(Color.RED);
             gc.strokeLine(x1,y1,x2,y2);
         });
     }
@@ -44,6 +41,8 @@ public class PsPlotterLayer extends PsPainterGraphCore {
         draw();
     }
     public void draw(){
+        gc.setFill(colorMain);
+        gc.setStroke(colorMain);
         gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
         super.draw();
     }

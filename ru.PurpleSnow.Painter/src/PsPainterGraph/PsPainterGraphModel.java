@@ -166,6 +166,18 @@ public class PsPainterGraphModel<E extends PsPainterGraphCore> implements PsPain
         }
         copyParams(get(0));
     }
+    public void move(int step){
+        for(E core:cores){
+            core.move(step);
+        }
+        copyParams(get(0));
+    }
+    public void moveTo(int point){
+        for(E core:cores){
+            core.moveTo(point);
+        }
+        copyParams(get(0));
+    }
     public void fitY(boolean full){
         /*if(cores!=null && cores.size()>0) {
             min = cores.get(0).y[0];

@@ -190,4 +190,13 @@ public class PsMathArrays {
             return ret;
         }
     }
+    public static double[] genStraight(int size,double step,double from){
+        double[] ret = new double[size];
+        double start = from;
+        for(int i=0;i<size;i++){
+            ret[i]=start;
+            start+=step;
+        }
+        return ret;
+    }
 }

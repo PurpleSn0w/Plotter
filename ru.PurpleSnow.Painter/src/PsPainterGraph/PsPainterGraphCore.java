@@ -187,7 +187,7 @@ public class PsPainterGraphCore {
         int range=end-begin+1;
         int newBegin=begin;
         int newEnd=end;
-        if(rate<1){
+        if(rate<=1){
             range=(int)((end-begin)*rate);
             range=Math.max(3,range);
             int left=range/2;
@@ -225,6 +225,29 @@ public class PsPainterGraphCore {
     }
     public void zoomX(double rate){
         zoomX(rate,begin+(end-begin)/2);
+    }
+    public void move(int step){
+        int realStep = step;
+        if(begin+step<0)realStep=-begin;
+        if(end+step>y.length-1)realStep=y.length-1-end;
+        begin+=realStep;
+        end+=realStep;
+    }
+    public void moveTo(int point){
+        int range=end-begin;
+        int left=range/2;
+        int newBegin = point-left;
+        int newEnd = newBegin+range;
+        if(newBegin<0){
+            newEnd-=newBegin;
+            newBegin=0;
+        }
+        if(newEnd>y.length-1){
+            newEnd=y.length-1;
+            newBegin=newEnd-range;
+        }
+        begin=newBegin;
+        end=newEnd;
     }
 
     public interface DrawLine{

@@ -12,8 +12,7 @@ public class PsPlotterWrapper {
     PsPlotterMenu menuBar;
     //VBox root = new VBox();
     BorderPane root = new BorderPane();
-    PsPlotterCanvas canvas = new PsPlotterCanvas();
-    PsPlotterStack stack = new PsPlotterStack(10,10,10,10);
+    PsPlotterStack stack = new PsPlotterStack(10,10,30,10);
     //BorderPane workArea = new BorderPane();
     public PsPlotterWrapper(Stage stage,int x,int y,int w,int h){
         this.stage=stage;
@@ -21,40 +20,42 @@ public class PsPlotterWrapper {
         root.widthProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         root.heightProperty().addListener(e -> stack.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         menuBar = new PsPlotterMenu(
-                ()->{
+                ()->{//actionRandom
                     stack.removeAll();
                     double[] r = PsMathArrays.genRandom(100,(double)10);
                     double[] s = PsMathArrays.genSin(100,(double)10,0,0.7);
                     double[] sr = PsMathArrays.mult(s,r);
+                    double[] maxmin = PsMathArrays.maxmin(sr);
+                    double[] straight = PsMathArrays.genStraight(100,(maxmin[1]-maxmin[0])/100,maxmin[0]);
                     r = PsMathArrays.sum(r,50);
                     stack.addGraph(new PsPlotterLayer(stack,s));
                     stack.addGraph(new PsPlotterLayer(stack,r));
                     stack.addGraph(new PsPlotterLayer(stack,sr));
+                    stack.addGraph(new PsPlotterLayer(stack,straight));
                     stack.draw();
                 },
-                ()->{
+                ()->{//actionZoomInX
                     stack.layers.zoomX(0.8);
                     stack.draw();
-                    System.err.println("\nzoomIn\n");
-                    stack.layers.info();
                 },
-                ()->{
+                ()->{//actionZoomOutX
                     stack.layers.zoomX(1.2);
                     stack.draw();
-                    System.err.println("\nzoomOut\n");
-                    stack.layers.info();
                 },
-                () -> {
+                () -> {//actionZoomFit
                     stack.layers.fitY(true);
                     stack.draw();
-                    stack.layers.get(0).info();
-                    System.err.println("\nzoomFit\n");
-                    stack.layers.info();
                 },
-                (boolean zoomInArea) -> {
+                (boolean zoomInArea) -> {//actionZoomInArea
                     stack.toolZoomInArea = zoomInArea;
-                    //int point = stack.layers.begin + (stack.layers.end-stack.layers.begin)/2;
-                    //stack.layers.zoomX(0.8,point);
+                    stack.draw();
+                },
+                () -> {//actionMoveLeft
+                    stack.layers.move(-3);
+                    stack.draw();
+                },
+                () -> {//actionMoveRight
+                    stack.layers.move(3);
                     stack.draw();
                 }
             );
@@ -62,8 +63,6 @@ public class PsPlotterWrapper {
         root.setTop(menuBar.root);
         //root.setCenter(canvas);
         root.setCenter(stack);
-        root.widthProperty().addListener(e -> canvas.setSize(root.getWidth(),root.getHeight()-menuBar.h));
-        root.heightProperty().addListener(e -> canvas.setSize(root.getWidth(),root.getHeight()-menuBar.h));
         setBounds(x,y,w,h);
         this.stage.setScene(new Scene(root,w,h));
         this.stage.show();
